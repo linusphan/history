@@ -6,7 +6,23 @@ $(function() {
     const idx = $e.attr('href');
 
     switchPage(idx);
+
+    window.history.pushState(
+      { idx },
+      $e.text(),
+      `${window.location.pathname}${idx}`
+    );
   });
+
+  $(window).on('popstate', function (e) {
+    const state = e.originalEvent.state;
+
+    switchPage(state === null ? '#page_1' : state.idx);
+  });
+
+  if (window.location.hash) {
+    switchPage(location.hash);
+  }
 
   function switchPage(idx) {
     $('.active').removeClass('active');
